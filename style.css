@@ -10,7 +10,7 @@ body {
     min-height: 100vh;
 }
 
-#app {
+#contenedor {
     background: white;
     padding: 20px;
     border-radius: 12px;

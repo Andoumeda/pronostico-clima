@@ -1,13 +1,26 @@
+document.addEventListener("DOMContentLoaded", () => {
+	const btn = document.getElementById("btn-buscar");
+	btn.addEventListener("click", obtenerClima);
+});
+
 async function obtenerClima() {
-	const ciudad = document.getElementById("inputCiudad").value;
+	const ciudad = document.getElementById("input-ciudad").value;
 	const claveApi = "TU_CLAVE_API"; // Reemplaza con tu clave API de OpenWeatherMap
 	const url = `https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${claveApi}&units=metric&lang=es`;
 
 	try {
     	const response = await fetch(url);
 
-    	if (!response.ok)
-    		throw new Error(`Error HTTP: ${response.status}`);
+    	if (!response.ok) {
+    		if (response.status === 404)
+				throw new Error("Ciudad no encontrada, verifica el nombre");
+			else if (response.status === 401)
+				throw new Error("Clave API inválida, revisa tu clave de OpenWeather");
+			else if (response.status === 400)
+				throw new Error("Por favor escribe una ciudad");
+			else
+				throw new Error(`Error HTTP ${response.status}`);
+		}
 
     	const data = await response.json();
 
